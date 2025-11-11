@@ -23,6 +23,11 @@ const auth = {
             document.cookie = "t=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         });
     },
+    isAdmin() {
+        const jwt = this.isAuthenticated();
+        return jwt && jwt.user.role === "admin";
+    },
+    
 };
 
 export default auth;

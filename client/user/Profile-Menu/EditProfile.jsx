@@ -8,8 +8,8 @@ import {
     Typography,
     Icon,
 } from "@mui/material";
-import auth from "../lib/auth-helper.js";
-import { read, update } from "./api-user.js";
+import auth from "../../lib/auth-helper.js";
+import { read, update } from "../API JS/api-user.js";
 import { Navigate, useParams } from "react-router-dom";
 
 export default function EditProfile() {
@@ -32,12 +32,16 @@ export default function EditProfile() {
             if (data?.error) {
                 setValues((prev) => ({ ...prev, error: data.error }));
             } else {
-                setValues((prev) => ({ ...prev, name: data.name, email: data.email }));
+                setValues((prev) => ({
+                    ...prev,
+                    name: data.name || "",
+                    email: data.email || "",
+                }));
             }
         });
 
         return () => abortController.abort();
-    }, [userId]);
+    }, [userId, jwt.token]);
 
     const clickSubmit = () => {
         const user = {
@@ -45,7 +49,6 @@ export default function EditProfile() {
             email: values.email || undefined,
             password: values.password || undefined,
         };
-
         update({ userId }, { t: jwt.token }, user).then((data) => {
             if (data?.error) {
                 setValues((prev) => ({ ...prev, error: data.error }));
@@ -60,7 +63,7 @@ export default function EditProfile() {
     };
 
     const handleChange = (name) => (event) => {
-        setValues({ ...values, [name]: event.target.value });
+        setValues((prev) => ({ ...prev, [name]: event.target.value }));
     };
 
     if (values.NavigateToProfile) {
@@ -81,7 +84,6 @@ export default function EditProfile() {
                 <Typography variant="h6" sx={{ mt: 2, mb: 2, color: "text.primary" }}>
                     Edit Profile
                 </Typography>
-
                 <TextField
                     id="name"
                     label="Name"
@@ -91,7 +93,6 @@ export default function EditProfile() {
                     sx={{ mx: 1, width: 300 }}
                 />
                 <br />
-
                 <TextField
                     id="email"
                     type="email"
@@ -102,7 +103,6 @@ export default function EditProfile() {
                     sx={{ mx: 1, width: 300 }}
                 />
                 <br />
-
                 <TextField
                     id="password"
                     type="password"
@@ -113,7 +113,6 @@ export default function EditProfile() {
                     sx={{ mx: 1, width: 300 }}
                 />
                 <br />
-
                 {values.error && (
                     <Typography component="p" color="error" sx={{ mt: 1 }}>
                         <Icon color="error" sx={{ verticalAlign: "middle", mr: 1 }}>
@@ -123,7 +122,6 @@ export default function EditProfile() {
                     </Typography>
                 )}
             </CardContent>
-
             <CardActions sx={{ justifyContent: "center" }}>
                 <Button color="primary" variant="contained" onClick={clickSubmit} sx={{ mb: 2 }}>
                     Submit

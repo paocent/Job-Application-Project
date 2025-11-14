@@ -1,16 +1,18 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Paper,
     List,
     ListItem,
     ListItemAvatar,
     ListItemText,
+    ListItemSecondaryAction,
     IconButton,
     Avatar,
     Typography,
+    Link,
 } from "@mui/material";
 import ArrowForward from "@mui/icons-material/ArrowForward";
-import { list } from "./api-user.js";
+import { list } from "../API JS/api-user.js";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function Users() {
@@ -47,22 +49,25 @@ export default function Users() {
 
             <List dense>
                 {users.map((item) => (
-                    <ListItem
-                        button
+                    <Link
                         component={RouterLink}
                         to={`/user/${item._id}`}
+                        underline="none"
                         key={item._id}
-                        secondaryAction={
-                            <IconButton edge="end">
-                                <ArrowForward />
-                            </IconButton>
-                        }
+                        sx={{ color: "inherit" }}
                     >
-                        <ListItemAvatar>
-                            <Avatar />
-                        </ListItemAvatar>
-                        <ListItemText primary={item.name} />
-                    </ListItem>
+                        <ListItem button>
+                            <ListItemAvatar>
+                                <Avatar />
+                            </ListItemAvatar>
+                            <ListItemText primary={item.name} />
+                            <ListItemSecondaryAction>
+                                <IconButton edge="end">
+                                    <ArrowForward />
+                                </IconButton>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    </Link>
                 ))}
             </List>
         </Paper>

@@ -1,35 +1,44 @@
+// src/routes/education.routes.js (FIXED for /api/education)
+
 import express from 'express'
 import educationCtrl from '../controllers/educations.controller.js'
 import authCtrl from '../controllers/auth.controller.js'
 const router = express.Router()
 
-// ----------------------------------------------------
-// Base Routes: /api/educations
-// ----------------------------------------------------
-router.route('/api/educations')
-    .post(educationCtrl.create)
-    .get(educationCtrl.list)
+// ASSUMPTION: This router is mounted in the main server file using:
+// app.use('/', router) 
+// The route path is now defined explicitly below:
 
 // ----------------------------------------------------
-// Specific Routes MUST COME BEFORE Parameterized Routes
+// Base Routes: (Endpoint is the root: /api/education)
 // ----------------------------------------------------
-
-// 1. DELETE ALL: This specific path must be defined first
-router.route('/api/educations/all')
-    .delete(educationCtrl.removeAll) 
+// The full path is defined here
+router.route('/api/education')
+    // GET /api/education - List all education entries
+    .get(authCtrl.requireSignin, educationCtrl.list)
+    // POST /api/education - Create a new education entry
+    .post(authCtrl.requireSignin, educationCtrl.create)
 
 // ----------------------------------------------------
-// Parameterized Routes: /api/educations/:educationId
+// Specific Routes (e.g., /api/education/all)
 // ----------------------------------------------------
+// The full path is defined here
+router.route('/api/education/all') 
+    // DELETE /api/education/all
+    .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, educationCtrl.removeAll) 
 
-// 2. Define the parameterized routes
-router.route('/api/educations/:educationId')
-    .get(authCtrl.requireSignin, educationCtrl.read)
-    .put(authCtrl.requireSignin, authCtrl.hasAuthorization, educationCtrl.update)
-    .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, educationCtrl.remove)
-
-// 3. Register the educationId parameter middleware ONCE
-//    This will only run for requests matching the pattern /api/educations/:educationId
+// ----------------------------------------------------
+// Parameterized Routes: (e.g., /api/education/:educationId)
+// ----------------------------------------------------
+// Note: Parameter paths must still be absolute or they won't work correctly
 router.param('educationId', educationCtrl.educationByID)
+
+router.route('/api/education/:educationId')
+    // GET /api/education/:educationId - Read one
+    .get(authCtrl.requireSignin, educationCtrl.read)
+    // PUT /api/education/:educationId - Update one
+    .put(authCtrl.requireSignin, authCtrl.hasAuthorization, educationCtrl.update)
+    // DELETE /api/education/:educationId - Remove one
+    .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, educationCtrl.remove)
 
 export default router

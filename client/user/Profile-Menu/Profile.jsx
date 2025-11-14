@@ -13,9 +13,9 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import PersonIcon from "@mui/icons-material/Person";
-import DeleteUser from "./DeleteUser.jsx";
-import auth from "../lib/auth-helper.js";
-import { read } from "./api-user.js";
+import DeleteUser from "../Users-Menu/DeleteUser.jsx";
+import auth from "../../lib/auth-helper.js";
+import { read } from "../API JS/api-user.js";
 import { useLocation, Navigate, Link, useParams } from "react-router-dom";
 
 export default function Profile() {
@@ -28,7 +28,6 @@ export default function Profile() {
     useEffect(() => {
         const abortController = new AbortController();
         const signal = abortController.signal;
-
         read({ userId }, { t: jwt.token }, signal).then((data) => {
             if (data && data.error) {
                 setRedirectToSignin(true);
@@ -36,15 +35,16 @@ export default function Profile() {
                 setUser(data);
             }
         });
-
         return () => abortController.abort();
     }, [userId]);
 
     if (redirectToSignin) {
-        return (
-            <Navigate to="/signin" state={{ from: location.pathname }} replace />
-        );
+        return <Navigate to="/signin" state={{ from: location.pathname }} replace />;
     }
+
+    // Safely determine the role for display
+    const userRole = user.role ? user.role.toUpperCase() : 'N/A';
+    const primaryText = user.name ? user.name : 'Loading...';
 
     return (
         <Paper
@@ -59,7 +59,6 @@ export default function Profile() {
             <Typography variant="h6" sx={{ mt: 3, mb: 2, color: "text.primary" }}>
                 Profile
             </Typography>
-
             <List dense>
                 <ListItem>
                     <ListItemAvatar>
@@ -67,9 +66,7 @@ export default function Profile() {
                             <PersonIcon />
                         </Avatar>
                     </ListItemAvatar>
-
-                    <ListItemText primary={user.name} secondary={user.email} />
-
+                    <ListItemText primary={primaryText} secondary={user.email} />
                     {auth.isAuthenticated().user &&
                         auth.isAuthenticated().user._id === user._id && (
                             <ListItemSecondaryAction>
@@ -82,17 +79,24 @@ export default function Profile() {
                             </ListItemSecondaryAction>
                         )}
                 </ListItem>
-
                 <Divider />
-
+                
+                {/* 💡 NEW: Display User Role */}
+                <ListItem>
+                    <ListItemText
+                        primary={`User Role: ${userRole}`}
+                        // Optional: Use a subtitle for emphasis or context
+                        secondary={userRole === 'ADMIN' ? "Authorized to manage contacts and users." : "Standard user privileges."}
+                    />
+                </ListItem>
+                <Divider />
+                
                 <ListItem>
                     <ListItemText
                         primary={
                             user.created
                                 ? `Joined: ${new Date(user.created).toDateString()}`
                                 : "Loading..."
-                            
-                                
                         }
                     />
                 </ListItem>

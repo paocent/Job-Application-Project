@@ -9,7 +9,7 @@ export default function Layout() {
       <div className="wrapper">
         <header>
           <img src={logo} alt="Logo" className="logo" />
-          <h1>My Portfolio</h1>
+          <h1>Job Application Tracker JAT</h1>
           <nav>
             {/* Navigation Links with class for CSS */}
             <Link to="/" className="home">Home</Link> |

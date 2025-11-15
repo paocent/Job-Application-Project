@@ -20,6 +20,11 @@ import PrivateRoute from './lib/PrivateRoute';
 import EditProfile from './user/Profile-Menu/EditProfile.jsx';
 import NewContacts from './user/Contacts-Menu/NewContacts.jsx';
 import NewEducation from './user/Education-Menu/NewEducation.jsx';
+
+// --- Job Tracker Imports ---
+import JobTrackerMain from './JobTrackerMain/Dashboard.jsx';
+
+
 import Menu from './core/Menu';
 
 // --- FEATURE IMPORTS ---
@@ -46,6 +51,7 @@ function MainRouter() {
           {/* Public Routes */}
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
+          <Route path="dashboard" element={<JobTrackerMain />} />
           
           {/* Static Education Page (If you have one) */}
           {/* 💡 FIX 3: Changed variable name to avoid conflict with CRUD component */}

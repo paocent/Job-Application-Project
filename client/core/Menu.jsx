@@ -31,7 +31,7 @@ export default function Menu() {
         <AppBar position="static">
             <Toolbar sx={{ display: "flex", gap: 2, alignItems: "center" }}>
                 <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                    Profile App
+                    Job Application Tracker (JAT)
                 </Typography>
 
                 {/* --- Public Links --- */}

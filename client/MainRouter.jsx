@@ -8,7 +8,7 @@ import About from './src/about';
 import Contact from './src/contact';
 // 💡 Issue: Rename this for clarity (e.g., StaticEducationPage) if it's not the CRUD list
 import StaticEducationPage from './src/education'; 
-import Project from './src/project';
+import Project from './src/Testimonials.jsx';
 import Layout from './components/Layout';
 import Services from './src/Services';
 import Home from './components/home';

@@ -31,9 +31,9 @@ app.use(cookieParser()); // <--- CORRECT POSITION
 
 app.use(compress()) // Compression should run early
 app.use(helmet())   // Helmet should run early for security
-app.use(cors())     // CORS should run early
+app.use(cors())     // CORS should run early 
 
-// --- Removed Redundant Body-Parser Calls ---
+// --- Removed Redundant Body-dParser Calls ---s
 // The following lines were redundant and placed too late:
 // app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({ extended: true }))

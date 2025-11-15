@@ -15,7 +15,7 @@ export default function Layout() {
             <Link to="/" className="home">Home</Link> |
             <Link to="/about" className="about">About JAT</Link> |
             <Link to="/education" className="education">Education</Link> |
-            <Link to="/project" className="project">Project</Link> |
+            <Link to="/project" className="project">Testimonials</Link> |
             <Link to="/contact" className="contact">Contact Me</Link>
             | <Link to="/services" className="services">Services</Link> |
             <Link to="/dashboard" className="dashboard">Dashboard</Link>

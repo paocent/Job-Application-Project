@@ -1,296 +1,245 @@
 /*
-GENERAL.CSS - Stylesheet overview and documentation
+GENERAL.CSS - Stylesheet for Job Application Tracker (JAT)
 Author: Paolo Andrei Adame
-Last updated: September 20 2025
-
-Purpose
--------
-This stylesheet contains layout and component styles used across the portfolio application.
-It defines general page containers, content areas, cards for projects and services, image
-styles, and a contact-area block. Each section is implemented as a set of class selectors
-so they can be applied to semantic HTML elements.
-
-Organization
-------------
-- .container: Generic centered wrapper for content blocks.
-- .main-content: Primary content area used for top-aligned fixed content (e.g., hero/header area).
-- .education-body, .about-body: Typographic body text containers with spacing & line-height.
-- .header: Large typographic heading style for page titles.
-- .about-image: Circular profile or avatar image styling.
-- .project-main, .project-card, .project-image: Grid/list of project cards with hover effects.
-- .services-section, .services-container, .service-card, .service-image: Services area using a responsive grid and card UI.
-- .contact-container, .contact-form: Contact page layout and basic form controls.
-
-Usage notes & expected HTML structure
-------------------------------------
-- .container
-    - Use as a generic wrapper inside page sections. Provides central alignment, padding,
-        rounded corners and soft shadow. Text color is set for dark backgrounds.
-    - Example: <div class="container">...</div>
-
-- .main-content
-    - Intended for a fixed, centered content panel at the top of the viewport. Because it is
-        position: fixed and centered with transform, avoid using it for very long content unless
-        max-height and overflow are explicitly managed.
-    - If used alongside other fixed blocks (e.g., .contact-container), ensure only one is fixed
-        at a time or adjust top values to avoid overlap.
-
-- Text bodies (.education-body, .about-body)
-    - Provide increased font-size and line-height for readability. Use for paragraphs and lists.
-
-- .header
-    - High-visibility page/section title. Uses heavier font-weight and a colored text shadow.
-    - Suitable for top-of-page headings; do not nest within extremely small containers.
-
-- .about-image
-    - Circular image meant for avatars/profile pictures. Constrain source images to square or
-        allow object-fit on the element to avoid distortion.
-
-- Project & Service cards (.project-main, .project-card, .project-image, .services-container, .service-card, .service-image)
-    - Cards use a subtle shadow and transform transitions on hover for interactive feel.
-    - .project-main uses flex with wrapping; .services-container uses CSS Grid with
-        repeat(auto-fit, minmax(...)) for responsive columns.
-    - Each card expects an image, title and short description. Keep text concise to avoid
-        overflow; consider limiting text height or using ellipsis for long content.
-
-- .contact-container & .contact-form
-    - Contact container is also position: fixed and centered, similar to .main-content.
-        This is suitable for short contact panels or modals; for full-page forms consider a
-        non-fixed layout or remove the fixed positioning.
-    - .contact-form is a vertical form stack. Inputs and textarea receive consistent padding,
-        borders and radius; button uses a primary green background for submit actions.
-
-Accessibility & Responsiveness
-------------------------------
-- Contrast: Many components use dark backgrounds with light text (#fffafa / light grays).
-    Verify color contrast ratios meet WCAG standards, especially for body text and small labels.
-- Focus states: Ensure keyboard users can see focus rings on interactive elements (links,
-    buttons, form controls). Consider adding :focus outlines or visible focus styles.
-- Fixed positioning: Fixed top panels (.main-content, .contact-container) can obscure
-    content on small screens. Either:
-        - Provide toggles that remove fixed behavior on narrow viewports, or
-        - Add appropriate top padding/margins to the page content to prevent overlap.
-- Images: Use modern responsive techniques (srcset, sizes, or object-fit) to optimize loading
-    and ensure no layout shifts.
-
-Customizability & Suggested Improvements
-----------------------------------------
-- Extract color and spacing values into CSS variables (e.g., --bg-card, --text-muted,
-    --primary-accent, --gap-lg) to simplify theme changes.
-- Consider adding max-height and overflow:auto to fixed panels when content may exceed the
-    viewport height; add smooth scrolling within the panel if necessary.
-- Add media queries to adjust:
-        - .main-content and .contact-container positioning (switch to static/relative on small screens)
-        - card widths and grid gaps for narrow viewports
-- Add utility helper classes (e.g., .sr-only for screen-reader-only text, .center, .muted)
-    to reduce duplication in markup.
-
-Performance & Maintenance
--------------------------
-- Group and compress repetitive shadow declarations into variables or mixins (if using a preprocessor).
-- Keep images optimized and sized for the target card dimensions (200px / 300px as used here).
-- Document any required markup patterns (e.g., structure of a project card) in the project's README
-    so that other contributors can implement consistent components.
-
-Change Log
-----------
-- Keep a brief change log here for major layout or naming changes to assist future maintainers.
-*/
-/*  
-general.css
-Paolo Andrei Adame
-September 20 2025
+Last updated: [CURRENT DATE]
+-----------------------------------------------------------------------
+REVISION NOTES:
+- Implemented CSS variables for theme customization and consistency.
+- Standardized content container classes for better reusability (e.g., .content-container).
+- Removed problematic 'position: fixed' from main content areas.
+- Updated colors and structure for a cleaner dark-theme look.
+-----------------------------------------------------------------------
 */
 
-.container {
+:root {
+    /* 1. Theme Colors */
+    --color-bg-dark: #1e1e1e; /* Main container background (was #1e1e1e in Layout.css) */
+    --color-bg-card: #2a2a2a; /* Card background (was #2e2e2e) */
+    --color-primary-accent: #00bfff; /* Deep Sky Blue - used for links/buttons (was #00bfff in Layout.css) */
+    --color-header: #6a1901; /* Header title color */
+    --color-text-light: #f5f5f5; /* Light text (was #fffafa) */
+    --color-text-muted: #b0b0b0; /* Secondary text */
+    --color-border: #444; /* Border/HR color */
+
+    /* 2. Spacing */
+    --spacing-md: 15px;
+    --spacing-lg: 25px;
+
+    /* 3. Typography */
+    --font-size-body: 1.1em; /* Slightly reduced for general body */
+    --line-height-body: 1.7;
+    --font-size-header: 2.8em; /* Slightly larger for impact */
+}
+
+/* ----------------------------------------------------
+| 1. General Containers & Layout
+| ---------------------------------------------------- */
+
+/* Generic wrapper for content blocks, provides central alignment and base color. */
+.content-container {
     margin: 0 auto;
-    padding: 20px;
-    /* background-color: #3e3c3c; */
+    padding: var(--spacing-lg);
+    background-color: var(--color-bg-dark); /* Use variable */
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    color: #fffafa;
+    /* Adjusted shadow for a softer lift effect */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+    color: var(--color-text-light); /* Use variable */
 }
 
-.main-content {
+/* Main content area (replaces .main-content, removing fixed positioning) */
+.page-content {
     text-align: left;
-    margin-top: 180px;
+    margin-top: 30px; /* Use standard margin for flow */
     margin-bottom: 20px;
-    width: 80%;
-    /* background-color: #4f4a4a; */
+    width: 90%; /* Use relative width */
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
     padding: 10px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 8px;
-    max-height: none;
 }
 
-.education-body{
-
-    font-size: 1.2em;
-    line-height: 1.6;
-}
-
-
-.about-body {
-    padding: 20px;
-    font-size: 1.2em;
-    line-height: 1.6;
-}
-
-
-
+/* High-visibility page/section title */
 .header {
     text-align: center;
     margin-top: 20px;
-    font-size: 2.5em;
-    color: #6a1901;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: var(--font-size-header); /* Use variable */
+    color: var(--color-header); /* Use variable */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Stronger shadow */
     font-family: 'Arial Black', sans-serif;
     font-weight: bold;
-    margin-bottom: 20px;
-
+    margin-bottom: 25px;
 }
+
+/* Typographic body text containers */
+.text-body { /* New, unified class for body text styling (replaces .education-body, .about-body) */
+    padding: 10px 0;
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+}
+
+/* ----------------------------------------------------
+| 2. Images & Specific Elements
+| ---------------------------------------------------- */
+
 .about-image {
     display: block;
     margin: 0 auto 20px auto;
-    max-width: 200px;
-    height: auto;
+    max-width: 180px; /* Slightly smaller for balance */
+    height: 180px;
     border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Ensure image fits circular container */
+    object-fit: cover; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border: 3px solid var(--color-primary-accent); /* Added accent border */
 }
 
-.project-main {
+/* ----------------------------------------------------
+| 3. Project/Job Card Grid (Used for job list)
+| ---------------------------------------------------- */
+
+.card-grid-main { /* Renamed from .project-main */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
+    gap: 30px; /* Increased gap for visual space */
+    margin-top: 30px;
 }
-.project-card {
-    background-color: #2e2e2e;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    padding: 15px;
+
+.standard-card { /* Renamed from .project-card */
+    background-color: var(--color-bg-card); /* Use variable */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    width: 320px; /* Slightly wider */
+    padding: var(--spacing-md);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid transparent; /* Prepare for hover border */
 }
 
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.standard-card:hover {
+    transform: translateY(-8px); /* More noticeable lift */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--color-primary-accent); /* Highlight on hover */
 }
 
-.project-image {
+.card-image { /* Renamed from .project-image */
     width: 100%;
     height: auto;
     border-radius: 8px;
     margin-bottom: 10px;
 }
 
-.services-section {
-    padding: 20px;
-    max-width: 600px;
+/* ----------------------------------------------------
+| 4. Services/Feature Cards (Can be used for JAT summary)
+| ---------------------------------------------------- */
+
+.feature-section { /* Renamed from .services-section */
+    padding: var(--spacing-lg);
+    max-width: 800px;
     margin: 0 auto;
 }
 
-.services-section h1 {
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.services-section h2 {
-    font-size: 1.2em;
-    font-weight: normal;
-    color: #b0b0b0;
-    margin-bottom: 20px;
-}
-
-.services-container { /* 3 column layout */
+.feature-grid { /* Renamed from .services-container */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 50px;
+    /* Use responsive columns for modern design */
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+    gap: 30px; 
+    margin-top: 20px;
 }
 
-.service-card {
-    background-color: #2e2e2e;
+.feature-card { /* Renamed from .service-card */
+    background-color: var(--color-bg-card); /* Use variable */
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    padding: var(--spacing-md);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.service-card h3 {
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #e0e0e0;
-}
-
-.service-card p {
-    font-size: 1em;
-    color: #b0b0b0;
-    margin: 0;
-}
-
-.service-card:hover {
+.feature-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}   
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}   
 
-.service-image {
-    width: 200px;
-    height: 200px;
-    margin-bottom: 15px;
+.feature-card h3 {
+    color: var(--color-primary-accent); /* Highlight headings */
+    font-size: 1.4em;
+    margin-bottom: 10px;
 }
 
-/*  
-contact.css
-Paolo Andrei Adame
-September 20 2025
-*/
+.feature-card p {
+    font-size: 1em;
+    color: var(--color-text-muted); /* Muted color for body text */
+}
 
-.contact-container {
+/* ----------------------------------------------------
+| 5. Contact Form (Used for Add Job Form)
+| ---------------------------------------------------- */
+
+.form-container { /* Renamed from .contact-container, removed fixed position */
     text-align: center;
-    margin-top: 180px;
-    margin-bottom: 20px;
-    width: 80%;
-    background-color: #4f4a4a;
-    padding: 10px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    margin: 30px auto; 
+    width: 90%;
+    max-width: 600px;
+    background-color: var(--color-bg-dark);
+    border-radius: 8px;
+    padding: var(--spacing-lg);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 
-.contact-form {
+.standard-form { /* Renamed from .contact-form */
     display: flex;
     flex-direction: column;
-    width: 300px;
-    margin: 0 auto;
+    /* No fixed width here, let container handle it */
+    margin: 0 auto; 
 }
-.contact-form label {
+
+.standard-form label {
     margin-bottom: 5px;
     font-weight: bold;
+    text-align: left;
+    margin-top: 10px;
+    color: var(--color-text-light);
 }
-.contact-form input, .contact-form textarea {
+
+.standard-form input, 
+.standard-form textarea,
+.standard-form select { /* Added select for status dropdown */
     margin-bottom: 15px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-.contact-form button {
     padding: 10px;
-    background-color: #4CAF50;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background-color: #333; /* Darker input background */
+    color: var(--color-text-light);
+    font-size: var(--font-size-body);
+}
+
+.standard-form button {
+    padding: 12px;
+    background-color: #4CAF50; /* Submit green */
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+.standard-form button:hover {
+    background-color: #5CB85C; /* Lighter green on hover */
+}
+
+/* ----------------------------------------------------
+| 6. Accessibility & Utility Improvements
+| ---------------------------------------------------- */
+
+/* Ensure form controls and links have visible focus states */
+a:focus, 
+button:focus, 
+input:focus, 
+textarea:focus,
+select:focus {
+    outline: 2px solid var(--color-primary-accent);
+    outline-offset: 2px;
 }

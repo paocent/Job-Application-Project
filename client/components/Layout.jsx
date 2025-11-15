@@ -41,6 +41,9 @@ export default function Layout() {
   );
 }
 
+
+// Planned New Layout for Job Application Tracker (JAT)
+
 // import React from 'react';
 // import { Outlet, Link } from 'react-router-dom';
 // import './Layout.css';
@@ -52,27 +55,26 @@ export default function Layout() {
 //     <>
 //       <div className="wrapper">
 //         <header>
+//           {/* Logo with descriptive alt text */}
 //           <img src={logo} alt="JAT Logo" className="logo" />
-//           {/* Changed header title from 'My Portfolio' to the application name */}
+          
+//           {/* Main application title */}
 //           <h1>Job Application Tracker (JAT)</h1>
 //           <nav>
-//             {/* Navigation Links for a Job Tracking App */}
+//             {/* Core Navigation Links for a Tracking App */}
             
-//             <Link to="/" className="home">Dashboard</Link> {/* Revised: Home page is now the main tracking dashboard */}
+//             {/* 1. Dashboard (The main view, usually the home page) */}
+//             <Link to="/" className="dashboard-link">Dashboard</Link> 
 //             |
-//             {/* Added: Link for adding a new application */}
-//             <Link to="/add-job" className="add-job">Add New Application</Link>
+//             {/* 2. Add New Application (The main action) */}
+//             <Link to="/add-job" className="add-job-link">Add New Application</Link>
 //             |
-//             {/* Removed: '/education' and '/project' (not needed for a tracking app) */}
+//             {/* 3. About the App */}
+//             <Link to="/about" className="about-app-link">About JAT</Link> 
+//             |
+//             {/* 4. User Profile/Settings */}
+//             <Link to="/profile" className="profile-link">Profile/Settings</Link>
             
-//             {/* Revised: '/about' now links to the app description */}
-//             <Link to="/about" className="about-app">About JAT</Link> 
-//             |
-//             {/* Added: Link for user profile/settings */}
-//             <Link to="/profile" className="profile">Profile/Settings</Link>
-            
-//             {/* Removed: '/contact' and '/services' (usually less critical for an internal tool) */}
-
 //           </nav>
 //         </header>
 
@@ -80,13 +82,13 @@ export default function Layout() {
 
 //         <main>
 //           <Outlet />
-//           {/* This is where the routed components (Dashboard, Add Job, etc.) will be rendered */}
+//           {/* This is where the specific components (Dashboard, Add Job, etc.) will be rendered */}
 //         </main>
 
 //         <hr />
 
 //         <footer>
-//           {/* Revised footer text */}
+//           {/* Updated footer text to match the application name */}
 //           <p>&copy; 2025 Job Application Tracker. All rights reserved.</p>
 //         </footer>
 //       </div>

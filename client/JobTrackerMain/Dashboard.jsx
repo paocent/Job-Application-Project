@@ -1,6 +1,6 @@
 import React from 'react';
 // Assuming a CSS file for styling the dashboard
-//import './DashboardSummary.css'; 
+import './css/Dashboard.css';
 import { Link } from 'react-router-dom';
 
 export default function DashboardSummary() {
@@ -15,7 +15,7 @@ export default function DashboardSummary() {
   return (
     <div className="dashboard-container">
       <h1 className='header'>📊 Application Dashboard</h1>
-      <p>
+      <p className="welcome-message">
         Welcome! Here's a quick look at your job search progress.
       </p>
 

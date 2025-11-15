@@ -1,0 +1,44 @@
+.dashboard-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+}
+
+.welcome-message {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #555;
+}
+
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.summary-cards-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
+}
+
+.quick-actions {
+    text-align: center;
+}
+.quick-actions button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.job-list-placeholder {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+}
+.job-list-placeholder p {
+    margin: 0;
+}
+

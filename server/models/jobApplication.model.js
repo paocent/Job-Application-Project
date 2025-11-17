@@ -1,6 +1,8 @@
+// src/models/jobTrack.model.js
+
 import mongoose from 'mongoose';
 
-const JobApplicationSchema = new mongoose.Schema({
+const JobTrackSchema = new mongoose.Schema({
     company: {
         type: String,
         trim: true,
@@ -29,17 +31,17 @@ const JobApplicationSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    // Links the job application to a specific user (the owner)
-    owner: {
+    // The link to the user, used by your controller logic
+    userId: { 
         type: mongoose.Schema.ObjectId,
-        ref: 'User', // Assuming your user model is still named 'User'
+        ref: 'User',
         required: true
     },
     created: {
         type: Date,
         default: Date.now
-    }
+    },
+    updated: Date // For tracking updates
 });
 
-// Export the model using the distinct name 'JobApplication'
-export default mongoose.model('JobApplication', JobApplicationSchema);
+export default mongoose.model('Job', JobTrackSchema);

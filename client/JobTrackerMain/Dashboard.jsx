@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import ApplicationTable from './ApplicationTable'; // Imported new component
+import ApplicationTable from './JobApplication/ApplicationTable'; // Imported new component
 import SummaryCards from './SummaryCards';     // Imported new component
 import '../src/src-CSS/general.css'; 
 

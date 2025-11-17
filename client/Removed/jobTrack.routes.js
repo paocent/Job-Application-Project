@@ -1,6 +1,6 @@
 import express from 'express';
-import jobCtrl from '../controllers/jobTrack.controller.js';
-import authCtrl from '../controllers/auth.controller.js';
+import jobCtrl from '../controllers/jobTrack.controller.js/index.js';
+import authCtrl from '../../server/controllers/auth.controller.js';
 
 const router = express.Router();
 

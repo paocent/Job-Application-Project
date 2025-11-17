@@ -21,6 +21,7 @@ import EditProfile from './user/Profile-Menu/EditProfile.jsx';
 import NewContacts from './user/Contacts-Menu/NewContacts.jsx';
 import NewEducation from './user/Education-Menu/NewEducation.jsx';
 import Testimonials from './JobTrackerMain/Testimonials.jsx';
+import AddJob from './JobTrackerMain/JobApplication/AddJob.jsx';    
 
 // --- Job Tracker Imports ---
 import JobTrackerMain from './JobTrackerMain/Dashboard.jsx';
@@ -64,11 +65,14 @@ function MainRouter() {
           <Route path="users" element={<Users />} />
           <Route path="signup" element={<Signup />} />
           <Route path="signin" element={<SignIn />} />
+          
           
           {/* AUTHENTICATED/PRIVATE ROUTES */}
           
               <Route path="dashboard" element={<PrivateRoute><JobTrackerMain /></PrivateRoute>} />
+              <Route path="add-job" element={<PrivateRoute><AddJob /></PrivateRoute>} />
               <Route path="testimonials" element={<Testimonials />} />
+
 
 
 

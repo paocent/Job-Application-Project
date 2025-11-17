@@ -1,6 +1,6 @@
 import Job from '../models/jobTrack.model.js';
 import extend from 'lodash/extend.js';
-import errorHandler from './error.controller.js';
+import errorHandler from '../../server/controllers/error.controller.js';
 
 /**
  * Middleware to fetch a single job by ID and attach it to the request object.

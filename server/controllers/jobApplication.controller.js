@@ -1,13 +1,16 @@
-import Job from '../models/jobTrack.model.js';
+// src/controllers/jobApplication.controller.js
+
+import Job from '../models/jobApplication.model.js';
 import extend from 'lodash/extend.js';
 import errorHandler from './error.controller.js';
 
 /**
  * Middleware to fetch a single job by ID and attach it to the request object.
+ * NOTE: This function populates the userId field.
  */
 const jobByID = async (req, res, next, id) => {
     try {
-        // Find the job and also populate the userId (optional, but good practice)
+        // Find the job and populate the userId field with the user's _id and name
         let job = await Job.findById(id).populate('userId', '_id name'); 
         if (!job) {
             return res.status(404).json({
@@ -23,20 +26,16 @@ const jobByID = async (req, res, next, id) => {
     }
 };
 
-/**
- * Creates a new job application.
- * Requires user to be signed in (via middleware).
- */
 const create = async (req, res) => {
-    // 🔑 Assign the ID of the signed-in user to the job document
     const job = new Job(req.body);
-    job.userId = req.auth._id; // Assuming req.auth._id holds the authenticated user's ID
+    // Assign the ID of the signed-in user
+    job.userId = req.auth._id;
     
     try {
         await job.save();
         return res.status(201).json({
             message: "Successfully tracked new job application!",
-            job: job // Return the created job object
+            job: job
         });
     } catch (err) {
         return res.status(400).json({
@@ -45,15 +44,11 @@ const create = async (req, res) => {
     }
 };
 
-/**
- * Lists all job applications for the logged-in user (Dashboard view).
- * Requires user to be signed in.
- */
 const listByUser = async (req, res) => {
     try {
-        // 🔑 Find ONLY jobs where the userId matches the signed-in user's ID
+        // Find ONLY jobs where the userId matches the signed-in user's ID
         let jobs = await Job.find({ userId: req.auth._id })
-                             .sort({ appliedDate: -1 }); // Show newest first
+                             .sort({ appliedDate: -1 });
         
         res.json(jobs);
     } catch (err) {
@@ -63,13 +58,11 @@ const listByUser = async (req, res) => {
     }
 };
 
-/**
- * Reads a single job application.
- * The job is already attached to req.job by the jobByID middleware.
- */
 const read = (req, res) => {
-    // Check if the job belongs to the user (security check)
-    if (req.job.userId.toString() !== req.auth._id.toString()) {
+    // 🔑 FINAL FIX: Access req.job.userId._id before calling .toString().
+    // This is necessary because jobByID populates userId, turning it into an object 
+    // { _id: ObjectId, name: '...' } instead of just a string ID.
+    if (req.job.userId._id.toString() !== req.auth._id.toString()) {
         return res.status(403).json({
             error: "User is not authorized to read this job application"
         });
@@ -77,16 +70,12 @@ const read = (req, res) => {
     return res.json(req.job);
 };
 
-/**
- * Updates a job application (e.g., status, notes).
- * Requires user to be signed in AND authorized (ownership).
- */
 const update = async (req, res) => {
     try {
         let job = req.job;
         
-        // Authorization check (must own the job to update it)
-        if (job.userId.toString() !== req.auth._id.toString()) {
+        // 🔑 FINAL FIX: Access the nested ._id for the authorization check.
+        if (job.userId._id.toString() !== req.auth._id.toString()) {
             return res.status(403).json({
                 error: "User is not authorized to update this job application"
             });
@@ -104,16 +93,12 @@ const update = async (req, res) => {
     }
 };
 
-/**
- * Deletes a job application.
- * Requires user to be signed in AND authorized (ownership).
- */
 const remove = async (req, res) => {
     try {
         let job = req.job;
         
-        // Authorization check (must own the job to delete it)
-        if (job.userId.toString() !== req.auth._id.toString()) {
+        // 🔑 FINAL FIX: Access the nested ._id for the authorization check.
+        if (job.userId._id.toString() !== req.auth._id.toString()) {
             return res.status(403).json({
                 error: "User is not authorized to delete this job application"
             });
@@ -133,7 +118,7 @@ const remove = async (req, res) => {
 
 export default { 
     create, 
-    jobByID, // The parameter function
+    jobByID,
     read, 
     listByUser, 
     remove, 

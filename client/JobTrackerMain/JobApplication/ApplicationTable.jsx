@@ -1,4 +1,6 @@
 import React from 'react';
+// 🔑 Import the Link component for smooth navigation
+import { Link } from 'react-router-dom'; 
 
 export default function ApplicationTable({ jobs }) {
   return (
@@ -12,7 +14,6 @@ export default function ApplicationTable({ jobs }) {
               <th>Role</th>
               <th>Status</th>
               <th>Date Applied</th>
-              {/* Add a column for viewing/editing details */}
               <th>Actions</th> 
             </tr>
           </thead>
@@ -21,10 +22,22 @@ export default function ApplicationTable({ jobs }) {
               <tr key={job._id}>
                 <td>{job.company}</td>
                 <td>{job.role}</td>
-                <td>{job.status}</td>
+                <td>
+                  {/* Optional: Add a style or class based on status for visual feedback */}
+                  <span className={`status-${job.status.toLowerCase()}`}>
+                    {job.status}
+                  </span>
+                </td>
                 <td>{new Date(job.appliedDate).toLocaleDateString()}</td>
-                {/* COMMENT: Link to a detail page for update/remove */}
-                <td><button>View/Edit</button></td> 
+                <td>
+                  {/* 🔑 Use the Link component with the dynamic job ID parameter */}
+                  <Link 
+                    to={`/job/${job._id}`} 
+                    className="button-link" // Add a class for styling like a button
+                  >
+                    View / Edit
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>

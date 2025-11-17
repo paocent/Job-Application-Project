@@ -13,6 +13,9 @@ import contactForms from './routes/contactsForm.routes.js' // Import contact for
 import Testimonials from './routes/testimonial.routes.js' // Import testimonials routes
 import AddJob from './routes/jobApplication.routes.js' // Import job application routes
 
+import dotenv from 'dotenv'
+dotenv.config();
+
 // Fix 1: Removed duplicate 'import cookieParser from 'cookie-parser''
 // The import is handled above.
 

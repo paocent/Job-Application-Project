@@ -3,15 +3,21 @@ import React from 'react';
 import './MainRouter.css';
 import { Route, Routes } from 'react-router-dom';
 
-// --- Standard Imports ---
+// --------------------------------------------------------------------------
+// --- 1. CORE & STATIC IMPORTS ---------------------------------------------
+// --------------------------------------------------------------------------
 import About from './src/about';
 import Contact from './src/contact';
-// 💡 Issue: Rename this for clarity (e.g., StaticEducationPage) if it's not the CRUD list
 import StaticEducationPage from './src/education'; 
 import Project from './JobTrackerMain/Testimonials.jsx';
 import Layout from './components/Layout';
 import Services from './src/Services';
 import Home from './components/home';
+import Menu from './core/Menu';
+
+// --------------------------------------------------------------------------
+// --- 2. AUTH & USER IMPORTS -----------------------------------------------
+// --------------------------------------------------------------------------
 import Users from './user/Users-Menu/Users.jsx';
 import Signup from './user/Signup';
 import SignIn from './lib/SignIn';
@@ -20,117 +26,113 @@ import PrivateRoute from './lib/PrivateRoute';
 import EditProfile from './user/Profile-Menu/EditProfile.jsx';
 import NewContacts from './user/Contacts-Menu/NewContacts.jsx';
 import NewEducation from './user/Education-Menu/NewEducation.jsx';
-import Testimonials from './JobTrackerMain/Testimonials.jsx';
+
+// --------------------------------------------------------------------------
+// --- 3. CRUD FEATURE IMPORTS ----------------------------------------------
+// --------------------------------------------------------------------------
+// JOB TRACKER
+import JobTrackerMain from './JobTrackerMain/Dashboard.jsx'; // Dashboard / Job List
 import AddJob from './JobTrackerMain/JobApplication/AddJob.jsx'; 
-import EditJob from './JobTrackerMain/JobApplication/EditJob.jsx';   
-
-// --- Job Tracker Imports ---
-import JobTrackerMain from './JobTrackerMain/Dashboard.jsx';
-
-
-import Menu from './core/Menu';
-
-// --- FEATURE IMPORTS ---
+import EditJob from './JobTrackerMain/JobApplication/EditJob.jsx'; 
+import Testimonials from './JobTrackerMain/Testimonials.jsx'; // Renamed Testimonials import
 
 // CONTACTS
-import MenuContacts from './user/Contacts-Menu/ListContact.jsx'; // Contacts List
-import EditContact from './user/Contacts-Menu/EditContacts.jsx'; // Edit Contact Form
+import MenuContacts from './user/Contacts-Menu/ListContact.jsx'; 
+import EditContact from './user/Contacts-Menu/EditContacts.jsx'; 
 
-// EDUCATION (Must match exported names and paths)
-// 💡 FIX 1: Ensure imports match your file system and export type (default vs named)
-import MenuEducation from './user/Education-Menu/ListEducation.jsx'; // Education List View
-import EditEducation from './user/Education-Menu/EditEducation.jsx'; // Edit Education Form
+// EDUCATION
+import MenuEducation from './user/Education-Menu/ListEducation.jsx'; 
+import EditEducation from './user/Education-Menu/EditEducation.jsx'; 
 
 
 function MainRouter() {
-  return (
-    <div className="container">
-      {/* 💡 FIX 2: Move <Menu /> outside the <Route path="/" element={<Layout />} /> */}
-      {/* The Menu should render on every page, while Layout wraps only page content */}
-      <Menu /> 
+    return (
+        <div className="container">
+            {/* Menu renders outside Layout to appear on all pages */}
+            <Menu /> 
 
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          {/* Public Routes */}
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          
-          
-          {/* Static Education Page (If you have one) */}
-          {/* 💡 FIX 3: Changed variable name to avoid conflict with CRUD component */}
-          <Route path="education" element={<StaticEducationPage />} /> 
+            <Routes>
+                {/* Layout serves as the wrapper for core content */}
+                <Route path="/" element={<Layout />}> 
+                    
+                    {/* ---------------------------------------------------------- */}
+                    {/* PUBLIC ROUTES */}
+                    {/* ---------------------------------------------------------- */}
+                    <Route index element={<Home />} />
+                    <Route path="about" element={<About />} />
+                    <Route path="contact" element={<Contact />} />
+                    <Route path="services" element={<Services />} /> 
+                    <Route path="users" element={<Users />} />
+                    <Route path="signup" element={<Signup />} />
+                    <Route path="signin" element={<SignIn />} />
+                    <Route path="education" element={<StaticEducationPage />} /> 
+                    {/* Note: Project and Testimonials are duplicates in your imports. Using Testimonials. */}
+                    <Route path="Project" element={<Testimonials />} /> 
+                    
+                    
+                    {/* ---------------------------------------------------------- */}
+                    {/* 🛠️ JOB TRACKER ROUTES (FIXED AND ORGANIZED) */}
+                    {/* ---------------------------------------------------------- */}
+                    
+                    {/* Dashboard (Job List View) */}
+                    <Route path="dashboard" element={<PrivateRoute><JobTrackerMain /></PrivateRoute>} />
+                    
+                    {/* New Job Creation */}
+                    <Route path="add-job" element={<PrivateRoute><AddJob /></PrivateRoute>} />
+                    
+                    {/* 🔑 FIX: Edit/View Route. Use the path '/job/:jobId' to match the Link 
+                        component used in ApplicationTable.jsx, resolving "No routes matched." */}
+                    <Route 
+                        path="job/:jobId" 
+                        element={<PrivateRoute><EditJob /></PrivateRoute>} 
+                    />
 
-          <Route path="project" element={<Project />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="services" element={<Services />} /> 
-          <Route path="users" element={<Users />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="signin" element={<SignIn />} />
-          
-          
-          {/* AUTHENTICATED/PRIVATE ROUTES */}
-          
-              <Route path="dashboard" element={<PrivateRoute><JobTrackerMain /></PrivateRoute>} />
-              <Route path="add-job" element={<PrivateRoute><AddJob /></PrivateRoute>} />
-              <Route path="edit-job/:jobId" element={<PrivateRoute><EditJob /></PrivateRoute>} />
-              <Route path="testimonials" element={<Testimonials />} />
+                    
+                    {/* ---------------------------------------------------------- */}
+                    {/* 1. CONTACTS CRUD ROUTES (Unchanged from your logic) */}
+                    {/* ---------------------------------------------------------- */}
+                    <Route 
+                        path="contacts" 
+                        element={<PrivateRoute><MenuContacts /></PrivateRoute>} 
+                    />
+                    <Route 
+                        path="contacts/edit/:contactId" 
+                        element={<PrivateRoute><EditContact /></PrivateRoute>}
+                    />
+                    <Route 
+                        path="contacts/new" 
+                        element={<PrivateRoute><NewContacts /></PrivateRoute>} 
+                    />
 
+                    {/* ---------------------------------------------------------- */}
+                    {/* 2. EDUCATION CRUD ROUTES (Unchanged from your logic) */}
+                    {/* ---------------------------------------------------------- */}
+                    <Route 
+                        path="education-list" 
+                        element={<PrivateRoute><MenuEducation /></PrivateRoute>} 
+                    />
+                    <Route
+                        path="education/edit/:educationId"
+                        element={<PrivateRoute><EditEducation /></PrivateRoute>}
+                    />
+                    <Route 
+                        path="education/new" 
+                        element={<PrivateRoute><NewEducation /></PrivateRoute>} 
+                    />
 
-
-
-
-
-
-          {/* 1. CONTACTS Routes */}
-          <Route 
-            path="contacts" 
-            element={<PrivateRoute><MenuContacts /></PrivateRoute>} 
-          />
-          <Route
-            path="contacts/edit/:contactId"
-            element={<PrivateRoute><EditContact /></PrivateRoute>}
-          />
-
-{/* 💡 FIX: ADD THE NEW CONTACTS CREATION ROUTE */}
-            <Route 
-                path="contacts/new" 
-                element={<PrivateRoute><NewContacts /></PrivateRoute>} 
-            />
-
-            {/* 2. EDUCATION Routes (CRUD) */}
-            {/* 💡 NEW: Education List View (e.g., /education/list or /education-crud) */}
-            {/* We'll use /education-list to avoid conflict with the static /education route */}
-            <Route 
-                path="education-list" 
-                element={<PrivateRoute><MenuEducation /></PrivateRoute>} 
-            />
-            
-            {/* 💡 NEW: Edit Education Route */}
-            <Route
-                path="education/edit/:educationId"
-                element={<PrivateRoute><EditEducation /></PrivateRoute>}
-            />
-            {/* 💡 FIX: ADD THE NEW CONTACTS CREATION ROUTE */}
-            <Route 
-                path="education/new" 
-                element={<PrivateRoute><NewEducation /></PrivateRoute>} 
-            />
-            
-          {/* 3. User Profile Routes */}
-          {/* Using /user/:userId and /user/edit/:userId is best practice for clarity */}
-          <Route path="user/:userId" element={<Profile />} />
-          <Route
-            path="user/edit/:userId"
-            element={<PrivateRoute><EditProfile /></PrivateRoute>}
-          />
-          
-          {/* 💡 CLEANUP: Removed duplicate <Route path="profile" element={<Profile />} /> 
-            since /user/:userId serves the same purpose. */}
-          
-        </Route>
-      </Routes>
-    </div>
-  );
+                    {/* ---------------------------------------------------------- */}
+                    {/* 3. USER PROFILE ROUTES (Unchanged from your logic) */}
+                    {/* ---------------------------------------------------------- */}
+                    <Route path="user/:userId" element={<Profile />} />
+                    <Route
+                        path="user/edit/:userId"
+                        element={<PrivateRoute><EditProfile /></PrivateRoute>}
+                    />
+                    
+                </Route> 
+            </Routes>
+        </div>
+    );
 };
 
 export default MainRouter;

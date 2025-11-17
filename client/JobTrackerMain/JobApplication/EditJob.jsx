@@ -5,15 +5,20 @@ import { useParams, useNavigate } from 'react-router-dom';
 import auth from '../../lib/auth-helper.js'; // Adjust path
 import '../css/generalCss.css'; 
 import DeleteJob from './DeleteJob.jsx'; 
-import format from 'date-fns/format'; // You may need to install date-fns: npm install date-fns
+import { format } from 'date-fns';
 
 export default function EditJob() {
-    const { jobId } = useParams(); // Matches the router parameter :jobId
+    const { jobId } = useParams();
     const navigate = useNavigate();
     const isAuthenticated = auth.isAuthenticated(); 
 
     const [formData, setFormData] = useState({
-        company: '', role: '', status: 'Applied', appliedDate: '', link: '', notes: ''
+        company: '', 
+        role: '', 
+        status: 'Applied', 
+        appliedDate: '', 
+        link: '', 
+        notes: ''
     });
     const [loading, setLoading] = useState(true);
     const [feedback, setFeedback] = useState('');
@@ -28,36 +33,60 @@ export default function EditJob() {
             setLoading(false);
             return;
         }
+        
+        // Helper function to handle the fetch
+        const fetchJobData = async () => {
+            try {
+                const response = await fetch(`/api/jobs/${jobId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + isAuthenticated.token,
+                    }
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Format date for the HTML 'date' input field (yyyy-MM-dd)
+                const dateOnly = data.appliedDate ? format(new Date(data.appliedDate), 'yyyy-MM-dd') : '';
+                
+                setFormData({
+                    company: data.company || '', 
+                    role: data.role || '', 
+                    status: data.status || 'Applied', 
+                    appliedDate: dateOnly, 
+                    link: data.link || '', 
+                    notes: data.notes || ''
+                });
+                setLoading(false);
+            } catch (err) {
+                setFeedback(`Error loading job: ${err.message}`);
+                setLoading(false);
+                if (err.message.includes('403') || err.message.includes('401')) {
+                    auth.clearJWT(() => navigate('/signin'));
+                }
+            }
+        };
 
-        fetch(`/api/jobs/${jobId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + isAuthenticated.token,
-            }
-        }).then(async response => {
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        }).then(data => {
-            // Format date for the input field (yyyy-MM-dd)
-            const dateOnly = data.appliedDate ? format(new Date(data.appliedDate), 'yyyy-MM-dd') : '';
-            setFormData({...data, appliedDate: dateOnly});
-            setLoading(false);
-        }).catch(err => {
-            setFeedback(`Error loading job: ${err.message}`);
-            setLoading(false);
-            if (err.message.includes('403') || err.message.includes('401')) {
-                 auth.clearJWT(() => navigate('/signin'));
-            }
-        });
-    }, [jobId, isAuthenticated, navigate]);
+        fetchJobData();
+
+    // 🔑 FIX: Only depend on jobId. Removed 'isAuthenticated' and 'navigate' 
+    // to prevent the fetch from re-running and overwriting the user's input 
+    // when the component re-renders.
+    }, [jobId]); 
 
 
     // --- Form Handlers ---
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        // This logic is correct and remains the standard way to update state
+        setFormData({ 
+            ...formData, 
+            [e.target.name]: e.target.value 
+        });
     };
 
     const handleSubmit = async (e) => {
@@ -77,7 +106,7 @@ export default function EditJob() {
             if (response.ok) {
                 setFeedback('Application updated successfully! Redirecting...');
                 setIsSuccess(true);
-                setTimeout(() => navigate('/'), 1500); 
+                setTimeout(() => navigate('/dashboard'), 1500);
             } else {
                 const errorData = await response.json();
                 if (response.status === 401 || response.status === 403) {
@@ -95,7 +124,11 @@ export default function EditJob() {
     };
 
     if (loading) return <div className="content-container"><p>Loading application details...</p></div>;
-    if (feedback.includes('Authentication')) return <div className="content-container"><p style={{ color: 'red' }}>Access Denied. Please sign in.</p></div>;
+    
+    if (feedback.includes('not authorized to read')) {
+        return <div className="content-container"><p style={{ color: 'red' }}>Access Denied: You do not own this job application.</p></div>;
+    }
+    if (!isAuthenticated) return <div className="content-container"><p style={{ color: 'red' }}>Access Denied. Please sign in.</p></div>;
 
     return (
         <div className="form-container">
@@ -106,8 +139,6 @@ export default function EditJob() {
             <form className="standard-form" onSubmit={handleSubmit}>
                 <label htmlFor="company">Company Name (Required):</label>
                 <input type="text" id="company" name="company" value={formData.company} onChange={handleChange} required />
-                
-                {/* ... (rest of the form fields: role, status, date, link, notes) ... */}
                 
                 <label htmlFor="role">Job Role/Title (Required):</label>
                 <input type="text" id="role" name="role" value={formData.role} onChange={handleChange} required />
@@ -132,10 +163,10 @@ export default function EditJob() {
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
                 <button 
                     type="button" 
-                    onClick={() => navigate('/')} 
+                    onClick={() => navigate('/dashboard')} 
                     style={{ backgroundColor: '#888', flexGrow: 1, marginRight: '10px' }}
                 >
-                    Cancel
+                    Cancel / Back to Dashboard
                 </button>
                 <DeleteJob jobId={jobId} />
             </div>

@@ -9,7 +9,7 @@ import { Route, Routes } from 'react-router-dom';
 import About from './src/about';
 import Contact from './src/contact';
 import StaticEducationPage from './src/education'; 
-import Project from './JobTrackerMain/Testimonials.jsx';
+//import Testimonials from './JobTrackerMain/Testimonials.jsx';
 import Layout from './components/Layout';
 import Services from './src/Services';
 import Home from './components/home';
@@ -66,8 +66,9 @@ function MainRouter() {
                     <Route path="signup" element={<Signup />} />
                     <Route path="signin" element={<SignIn />} />
                     <Route path="education" element={<StaticEducationPage />} /> 
+                    <Route path="testimonials" element={<Testimonials />} />
                     {/* Note: Project and Testimonials are duplicates in your imports. Using Testimonials. */}
-                    <Route path="Project" element={<Testimonials />} /> 
+                    
                     
                     
                     {/* ---------------------------------------------------------- */}

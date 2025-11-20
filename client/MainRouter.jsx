@@ -9,10 +9,6 @@ import { Route, Routes } from 'react-router-dom';
 import About from './src/about';
 
 import Contact from './src/contact.jsx';
-
-
-import Contact from './src/contact';
-
 import Layout from './components/Layout';
 import Services from './src/Services';
 import Home from './components/home';
@@ -69,7 +65,7 @@ function MainRouter() {
                     <Route path="signin" element={<SignIn />} />
 
                     {/* Note: Project and Testimonials are duplicates in your imports. Using Testimonials. */}
-                    
+                    <Route path="project" element={<Testimonials />} />
                     
                     
                     {/* ---------------------------------------------------------- */}

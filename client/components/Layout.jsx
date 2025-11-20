@@ -13,13 +13,12 @@ export default function Layout() {
           <nav>
             {/* Navigation Links with class for CSS */}
             <Link to="/" className="home">Home</Link> |
-            <Link to="/about" className="about">About JAT</Link> |
-            <Link to="/education" className="education">Education</Link> |
+            <Link to="/about" className="about">About JAT</Link> |            
             <Link to="/project" className="project">Testimonials</Link> |
             <Link to="/contact" className="contact">Contact Us</Link>
             | <Link to="/services" className="services">Services</Link> |
             <Link to="/dashboard" className="dashboard">Dashboard</Link>
-            | <Link to="/testimonials" className="testimonials">Testimonials</Link>
+           
            
 
           </nav>
@@ -35,7 +34,7 @@ export default function Layout() {
         <hr />
 
         <footer>
-          <p>&copy; 2025 My Portfolio. All rights reserved.</p>
+          <p>&copy; 2025 Job Application Tracker. All rights reserved.</p>
         </footer>
       </div>
     </>

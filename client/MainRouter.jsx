@@ -7,7 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 // --- 1. CORE & STATIC IMPORTS ---------------------------------------------
 // --------------------------------------------------------------------------
 import About from './src/about';
-import Contact from './src/contact';
+import Contact from './src/contact.jsx';
 
 import Layout from './components/Layout';
 import Services from './src/Services';

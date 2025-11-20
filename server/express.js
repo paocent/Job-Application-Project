@@ -7,7 +7,7 @@ import helmet from 'helmet'
 import userRoutes from './routes/user.routes.js' 
 import authRoutes from './routes/auth.routes.js'
 import contactsRoutes from './routes/contacts.routes.js'  
-import educationRoutes from './routes/education.routes.js'
+
 import projectsRoutes from './routes/project.routes.js'
 import contactForms from './routes/contactsForm.routes.js' // Import contact form routes
 import Testimonials from './routes/testimonial.routes.js' // Import testimonials routes
@@ -47,7 +47,7 @@ app.use(cors())     // CORS should run early
 app.use('/', userRoutes)
 app.use('/', contactsRoutes)
 app.use('/', authRoutes)
-app.use('/', educationRoutes)
+
 app.use('/', projectsRoutes)
 app.use('/', contactForms) // Add contact form routes
 app.use('/', Testimonials) // Add testimonials routes

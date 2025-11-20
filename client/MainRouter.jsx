@@ -8,8 +8,7 @@ import { Route, Routes } from 'react-router-dom';
 // --------------------------------------------------------------------------
 import About from './src/about';
 import Contact from './src/contact';
-import StaticEducationPage from './src/education'; 
-import Project from './JobTrackerMain/Testimonials.jsx';
+
 import Layout from './components/Layout';
 import Services from './src/Services';
 import Home from './components/home';
@@ -25,7 +24,7 @@ import Profile from './user/Profile-Menu/Profile.jsx';
 import PrivateRoute from './lib/PrivateRoute';
 import EditProfile from './user/Profile-Menu/EditProfile.jsx';
 import NewContacts from './user/Contacts-Menu/NewContacts.jsx';
-import NewEducation from './user/Education-Menu/NewEducation.jsx';
+
 
 // --------------------------------------------------------------------------
 // --- 3. CRUD FEATURE IMPORTS ----------------------------------------------
@@ -41,8 +40,7 @@ import MenuContacts from './user/Contacts-Menu/ListContact.jsx';
 import EditContact from './user/Contacts-Menu/EditContacts.jsx'; 
 
 // EDUCATION
-import MenuEducation from './user/Education-Menu/ListEducation.jsx'; 
-import EditEducation from './user/Education-Menu/EditEducation.jsx'; 
+
 
 
 function MainRouter() {
@@ -65,7 +63,7 @@ function MainRouter() {
                     <Route path="users" element={<Users />} />
                     <Route path="signup" element={<Signup />} />
                     <Route path="signin" element={<SignIn />} />
-                    <Route path="education" element={<StaticEducationPage />} /> 
+                    
                     {/* Note: Project and Testimonials are duplicates in your imports. Using Testimonials. */}
                     <Route path="Project" element={<Testimonials />} /> 
                     
@@ -104,22 +102,7 @@ function MainRouter() {
                         element={<PrivateRoute><NewContacts /></PrivateRoute>} 
                     />
 
-                    {/* ---------------------------------------------------------- */}
-                    {/* 2. EDUCATION CRUD ROUTES (Unchanged from your logic) */}
-                    {/* ---------------------------------------------------------- */}
-                    <Route 
-                        path="education-list" 
-                        element={<PrivateRoute><MenuEducation /></PrivateRoute>} 
-                    />
-                    <Route
-                        path="education/edit/:educationId"
-                        element={<PrivateRoute><EditEducation /></PrivateRoute>}
-                    />
-                    <Route 
-                        path="education/new" 
-                        element={<PrivateRoute><NewEducation /></PrivateRoute>} 
-                    />
-
+                    
                     {/* ---------------------------------------------------------- */}
                     {/* 3. USER PROFILE ROUTES (Unchanged from your logic) */}
                     {/* ---------------------------------------------------------- */}

@@ -1,73 +1,114 @@
 /* General body styling for a dark theme */
 body {
-    background-color: #121212; /* A dark, soft black */
-    color: #e0e0e0; /* A light grey for text */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Define a unified professional palette */
+    --color-bg-dark: #0f0f0f;      /* Near black background */
+    --color-bg-mid: #1a1a1a;       /* Card/Container background */
+    --color-bg-light: #2c2c2c;     /* Input/Accent background */
+    --color-text-light: #f0f0f0;   /* Primary text color */
+    --color-text-secondary: #aaaaaa; /* Muted text color */
+    --color-accent-primary: #007bff; /* Professional Blue Accent */
+    --color-separator: #333333;    /* Clean divider line */
+
+    background-color: var(--color-bg-dark); 
+    color: var(--color-text-light); 
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern, professional font stack */
     line-height: 1.6;
     margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; 
+    text-rendering: optimizeLegibility; /* Improves font smoothness */
 }
 
-/* Overall container for the layout */
+/* Overall container for the layout (Page Content Wrapper) */
 .wrapper {
-    /* Centering the container */
-    margin: 20px auto;
-    width: 90%;
-    max-width: 1000px;
-    padding: 30px;
-    background-color: #1e1e1e; /* A slightly lighter black for the container */
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    text-align: center;
+    /* Main content area takes up the remaining space */
+    flex-grow: 1; 
+    
+    /* Center and constrain width for readability */
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1280px; /* Slightly wider for modern dashboards */
+    
+    /* Remove padding here and let individual components handle internal spacing
+       to allow the header/footer to look seamless */
+    padding: 0 20px; 
 }
 
-/* Header and Navigation Styles */
+/* --- Header and Navigation Styles --- */
+
+/* Header acts as the top banner wrapper for your MUI Menu component */
 header {
-    margin-bottom: 20px;
+    width: 100%;
+    /* Add a clean shadow for depth, assuming the MUI AppBar is styled separately */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); 
+    margin-bottom: 40px; /* More space below the header */
 }
 
 h1 {
-    font-size: 2.5rem;
-    color: #00bfff; /* A professional accent color (deep sky blue) */
-    margin-bottom: 10px;
+    font-size: 2rem;
+    color: var(--color-accent-primary); 
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Nav links styling (if not using MUI buttons) */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-bottom: 10px;
 }
 
 nav a {
-    color: #e0e0e0; /* Links are the same color as the body text */
+    color: var(--color-text-secondary); 
     text-decoration: none;
-    font-size: 1.1rem;
-    margin: 0 15px;
-    transition: color 0.3s ease-in-out;
+    font-size: 1em;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
 }
 
 nav a:hover {
-    color: #00bfff; /* Highlight on hover with the accent color */
-    text-decoration: underline;
+    color: var(--color-text-light); 
+    background-color: rgba(0, 123, 255, 0.15); 
+    text-decoration: none;
 }
 
 /* Horizontal rule for separation */
 hr {
     border: none;
     height: 1px;
-    background-color: #444;
-    margin: 20px 0;
+    background-color: var(--color-separator);
+    margin: 30px 0;
 }
 
 /* Main content area */
 main {
     text-align: left;
+    /* Main content will contain components that have their own wrappers (like .dashboard-container) */
+    padding: 0; 
+    flex-grow: 1;
 }
 
 /* Footer styling */
 footer {
-    font-size: 0.9rem;
-    color: #888;
-    margin-top: 20px;
+    /* Footer stays at the bottom */
+    margin-top: auto; 
+    width: 100%;
+    padding: 15px 20px;
+    background-color: var(--color-bg-mid); 
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    border-top: 1px solid var(--color-separator);
 }
 
 .logo {
-    max-width: 100px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    
+    display: block;
+    margin: 0 auto 10px auto;
+    max-width: 70px; 
+    height: auto;
+    border-radius: 50%; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }

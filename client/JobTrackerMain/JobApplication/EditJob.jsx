@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import auth from '../../lib/auth-helper.js'; // Adjust path
 import '../css/generalCss.css'; 
+import '../css/EditJob.css';
 import DeleteJob from './DeleteJob.jsx'; 
 import { format } from 'date-fns';
 

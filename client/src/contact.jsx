@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../src/src-CSS/general.css';
+import './src-CSS/contact.css';
 
 export default function Contact() {
   // 1. State now includes separate firstName and lastName

@@ -1,12 +1,30 @@
-# React + Vite
+# 🚀 Job Application Tracker (JAT)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack job application management system designed to help job seekers efficiently organize, track, and visualize their application progress from submission to offer.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+JAT is built to provide a centralized and secure platform for all job search activities.
 
-## Expanding the ESLint configuration
+* **📊 Dashboard Summary:** Get a quick overview of key metrics, including total applications, interviews scheduled, and offers received.
+* **✅ Status Tracking:** Easily update the status of each application (Applied, Pending, Interviewing, Offer, Rejected) using a streamlined form.
+* **🔗 Secure Record Keeping:** Store confidential details, interview notes, and links to job postings securely in the database.
+* **🔒 User Authentication:** Secure access to personal job data using JWT (JSON Web Token) authentication for private user accounts.
+* **🎨 Responsive Design:** Built with React and custom CSS for a smooth user experience across various devices.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 💻 Tech Stack
+
+The JAT application utilizes the industry-standard **MERN** stack.
+
+| Category | Technology | Description |
+| :--- | :--- | :--- |
+| **Frontend** | **React** (with Vite) | Building the user interface and managing component state. |
+| **Backend** | **Node.js** & **Express** | Server-side runtime environment and framework for handling API requests. |
+| **Database** | **MongoDB** (via Mongoose) | Flexible, document-based database for storing job applications, user data, and testimonials. |
+| **Styling** | **Custom CSS** | Clean, dark-theme aesthetic for easy readability and a modern feel. |
+| **Auth** | **JSON Web Tokens (JWT)** | Secure, token-based authentication for user sessions. |
+| **Tooling** | **Vite** & **Nodemon** | Fast development server for React and automatic server restarts for Node.js. |
+
+---

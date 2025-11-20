@@ -7,7 +7,11 @@ import { Route, Routes } from 'react-router-dom';
 // --- 1. CORE & STATIC IMPORTS ---------------------------------------------
 // --------------------------------------------------------------------------
 import About from './src/about';
+
 import Contact from './src/contact.jsx';
+
+
+import Contact from './src/contact';
 
 import Layout from './components/Layout';
 import Services from './src/Services';
@@ -63,9 +67,9 @@ function MainRouter() {
                     <Route path="users" element={<Users />} />
                     <Route path="signup" element={<Signup />} />
                     <Route path="signin" element={<SignIn />} />
-                    
+
                     {/* Note: Project and Testimonials are duplicates in your imports. Using Testimonials. */}
-                    <Route path="Project" element={<Testimonials />} /> 
+                    
                     
                     
                     {/* ---------------------------------------------------------- */}

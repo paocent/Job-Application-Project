@@ -7,10 +7,18 @@ import {
     TextField,
     Typography,
     Icon,
+    Alert, // Using Alert for better error display
 } from "@mui/material";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
 import auth from "../../lib/auth-helper.js";
 import { read, update } from "../API JS/api-user.js";
 import { Navigate, useParams } from "react-router-dom";
+
+// Define consistent colors
+const ACCENT_COLOR = "#007bff"; 
+const CARD_BG_COLOR = "#1a1a1a";
+const BORDER_COLOR = "#333333";
 
 export default function EditProfile() {
     const { userId } = useParams();
@@ -18,9 +26,9 @@ export default function EditProfile() {
         name: "",
         password: "",
         email: "",
-        open: false,
         error: "",
         NavigateToProfile: false,
+        success: false, // New state for success feedback
     });
     const jwt = auth.isAuthenticated();
 
@@ -44,20 +52,30 @@ export default function EditProfile() {
     }, [userId, jwt.token]);
 
     const clickSubmit = () => {
+        setValues((prev) => ({ ...prev, error: "", success: false })); // Clear previous status
+        
         const user = {
             name: values.name || undefined,
             email: values.email || undefined,
-            password: values.password || undefined,
+            // Only send password if it's set (i.e., user wants to change it)
+            password: values.password || undefined, 
         };
+        
         update({ userId }, { t: jwt.token }, user).then((data) => {
             if (data?.error) {
                 setValues((prev) => ({ ...prev, error: data.error }));
             } else {
+                // On successful update, set success message and clear password field
                 setValues((prev) => ({
                     ...prev,
-                    userId: data._id,
-                    NavigateToProfile: true,
+                    password: "", // Clear password field for security
+                    error: "",
+                    success: true,
+                    // Navigate to profile after a short delay to allow success message to be seen
                 }));
+                setTimeout(() => {
+                    setValues((prev) => ({ ...prev, NavigateToProfile: true }));
+                }, 1500); 
             }
         });
     };
@@ -67,32 +85,56 @@ export default function EditProfile() {
     };
 
     if (values.NavigateToProfile) {
-        return <Navigate to={`/user/${values.userId}`} />;
+        return <Navigate to={`/user/${userId}`} />; // Use userId from useParams to ensure correct navigation
     }
 
     return (
         <Card
+            elevation={8} // Consistent elevation with Profile view
             sx={{
-                maxWidth: 600,
+                maxWidth: 650, // Consistent width with Profile view
                 mx: "auto",
                 mt: 5,
-                textAlign: "center",
-                pb: 2,
+                p: 4, 
+                borderRadius: 2,
+                backgroundColor: CARD_BG_COLOR, // Dark background
+                border: `1px solid ${BORDER_COLOR}`, // Subtle border
+                boxShadow: "0 10px 30px rgba(0, 0, 0, 0.7)", // Deep shadow
             }}
         >
             <CardContent>
-                <Typography variant="h6" sx={{ mt: 2, mb: 2, color: "text.primary" }}>
-                    Edit Profile
+                <Typography 
+                    variant="h4" 
+                    sx={{ 
+                        mt: 1, 
+                        mb: 4, 
+                        fontWeight: 700,
+                        color: ACCENT_COLOR, 
+                        borderBottom: `2px solid ${ACCENT_COLOR}30`, 
+                        pb: 1,
+                    }}
+                >
+                    Edit Account Details
                 </Typography>
+                
+                {/* --- Input Fields --- */}
                 <TextField
                     id="name"
                     label="Name"
                     value={values.name}
                     onChange={handleChange("name")}
                     margin="normal"
-                    sx={{ mx: 1, width: 300 }}
+                    fullWidth // Make fields full width for better mobile layout
+                    variant="filled" // Use filled variant for contrast in dark mode
+                    sx={{ 
+                        mb: 3, 
+                        backgroundColor: BORDER_COLOR, // Darker input background
+                        borderRadius: 1,
+                        '& .MuiInputBase-root': { color: '#f0f0f0' }, // Input text color
+                        '& .MuiInputLabel-root': { color: ACCENT_COLOR }, // Label color
+                    }}
                 />
-                <br />
+                
                 <TextField
                     id="email"
                     type="email"
@@ -100,31 +142,69 @@ export default function EditProfile() {
                     value={values.email}
                     onChange={handleChange("email")}
                     margin="normal"
-                    sx={{ mx: 1, width: 300 }}
+                    fullWidth
+                    variant="filled"
+                     sx={{ 
+                        mb: 3, 
+                        backgroundColor: BORDER_COLOR,
+                        borderRadius: 1,
+                        '& .MuiInputBase-root': { color: '#f0f0f0' },
+                        '& .MuiInputLabel-root': { color: ACCENT_COLOR },
+                    }}
                 />
-                <br />
+                
                 <TextField
                     id="password"
                     type="password"
-                    label="Password"
+                    label="New Password (Leave blank to keep current)"
                     value={values.password}
                     onChange={handleChange("password")}
                     margin="normal"
-                    sx={{ mx: 1, width: 300 }}
+                    fullWidth
+                    variant="filled"
+                    sx={{ 
+                        mb: 3, 
+                        backgroundColor: BORDER_COLOR,
+                        borderRadius: 1,
+                        '& .MuiInputBase-root': { color: '#f0f0f0' },
+                        '& .MuiInputLabel-root': { color: ACCENT_COLOR },
+                    }}
                 />
-                <br />
+                
+                {/* --- Feedback Messages --- */}
                 {values.error && (
-                    <Typography component="p" color="error" sx={{ mt: 1 }}>
-                        <Icon color="error" sx={{ verticalAlign: "middle", mr: 1 }}>
-                            error
-                        </Icon>
+                    <Alert 
+                        severity="error" 
+                        icon={<ErrorIcon fontSize="inherit" />} 
+                        sx={{ mt: 2, mb: 2, textAlign: 'left' }}
+                    >
                         {values.error}
-                    </Typography>
+                    </Alert>
                 )}
+                 {values.success && (
+                    <Alert 
+                        severity="success" 
+                        icon={<CheckCircleIcon fontSize="inherit" />} 
+                        sx={{ mt: 2, mb: 2, textAlign: 'left' }}
+                    >
+                        Profile updated successfully! Redirecting...
+                    </Alert>
+                )}
+
             </CardContent>
-            <CardActions sx={{ justifyContent: "center" }}>
-                <Button color="primary" variant="contained" onClick={clickSubmit} sx={{ mb: 2 }}>
-                    Submit
+            <CardActions sx={{ justifyContent: "center", pt: 0 }}>
+                <Button 
+                    color="primary" 
+                    variant="contained" 
+                    onClick={clickSubmit} 
+                    sx={{ 
+                        mb: 2,
+                        mt: 1, 
+                        bgcolor: ACCENT_COLOR,
+                        '&:hover': { bgcolor: '#0056b3' }
+                    }}
+                >
+                    Save Changes
                 </Button>
             </CardActions>
         </Card>

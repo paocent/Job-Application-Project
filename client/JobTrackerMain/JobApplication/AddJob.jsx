@@ -58,7 +58,7 @@ export default function AddJob() {
                 setFeedback('Application added successfully! Redirecting to Dashboard...');
                 setIsSuccess(true);
                 setTimeout(() => {
-                    navigate('/'); 
+                    navigate('/dashboard'); 
                 }, 1500); 
 
             } else {
@@ -140,7 +140,7 @@ export default function AddJob() {
                 <button type="submit">Submit Application</button>
                 <button 
                     type="button" 
-                    onClick={() => navigate('/')} 
+                    onClick={() => navigate('/dashboard')}
                     style={{ backgroundColor: '#888', marginTop: '10px' }}
                 >
                     Cancel / Back to Dashboard

@@ -10,13 +10,27 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+"test" : "react-scripts test --watchAll=false"
   },
+
+ "jest": {
+
+  "testMatch": [
+
+   "**/__tests__/**/*.{js,jsx,ts,tsx}",
+
+   "**/*.{spec,test}.{js,jsx,ts,tsx}",
+
+   "<rootDir>/client/core/**/*.{spec,test}.{js,jsx,ts,tsx}"
+
+  ]
+
+ },
+
+
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.4",
-    "@mui/material": "^7.3.4",
     "express": "^5.1.0",
     "link-react": "^3.0.0",
     "react": "^19.2.0",
@@ -25,7 +39,13 @@
     "react-router-dom": "^7.9.5"
   },
   "devDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@eslint/js": "^9.33.0",
+    "@mui/material": "^7.3.5",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
@@ -33,6 +53,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "react-scripts": "^5.0.1",
     "vite": "^7.1.2"
   }
 }
